@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Homepage on Psintica</title>
+    <link>/</link>
+    <description>Recent content in Homepage on Psintica</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 28 Nov 2018 15:14:39 +1000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Astronomy Project Cohort 1</title>
+      <link>/init/astronomy-project-cohort-1/</link>
+      <pubDate>Wed, 28 Nov 2018 15:14:39 +1000</pubDate>
+      
+      <guid>/init/astronomy-project-cohort-1/</guid>
+      <description>This is the first batch of students doing the project on Astronomy, led by Aman Kumar(amanasci).
+The project goes through a variety of topics and tries to teach very fundamental tools and techniques one requires while getting involved in an astronomy project.
+Hopefully this will help them learn new things.
+Project : Classification of Galaxies List of students :
+Coming soon&amp;hellip;.</description>
+    </item>
+    
+    <item>
+      <title>Aman Kumar</title>
+      <link>/team/aman-kumar/</link>
+      <pubDate>Mon, 19 Nov 2018 10:47:58 +1000</pubDate>
+      
+      <guid>/team/aman-kumar/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Biology Project Group by Dr. Amit Khurana</title>
+      <link>/init/biology-project-group-by-dr.-amit-khurana/</link>
+      <pubDate>Wed, 28 Nov 2018 15:14:39 +1000</pubDate>
+      
+      <guid>/init/biology-project-group-by-dr.-amit-khurana/</guid>
+      <description>This is our second mentoring group, being led by Dr. Amit Khurana.
+More deatils coming soon.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Thu, 22 Feb 2018 17:01:34 +0700</pubDate>
+      
+      <guid>/about/</guid>
+      <description>Lorem markdownum aequalis strigis. Saetigeri iubeas, vultu huic alvum nondum de obside ut laniavit arbor palmis, cum quin. Rupes vetat videndo, armigerae crimen habet Priamum nec.
+Ne verba patulosque numen vix libet Agitabitur signa lympha; non lacunae, mox cum tumulis quoque triste dictis. Ignibus inpatiens explorat, te tegens ferro nocere haud, et Dulichium tui male! Quo sed fuit flexit et hic die solido, gloria?
+Cum det dixit Parcarum qui spemque est Exit ex huic Quod consiste agitataque claustraque vicina videt lacertis Loquor videt Ardua non igne caelesti coniugis cognovi diversorum Per nunc pariterque saeva vindicet Locus evicit loquuntur Tyrrhena omnes, obstipui pugnabant temptavit Phoco vati dabant deus.</description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>/contact/</link>
+      <pubDate>Thu, 22 Feb 2018 17:01:34 +0700</pubDate>
+      
+      <guid>/contact/</guid>
+      <description>You can contact us on Linkedin, Discord or through mail : psintica@gmail.com.</description>
+    </item>
+    
+  </channel>
+</rss>

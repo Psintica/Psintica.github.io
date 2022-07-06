@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Initiatives on Psintica</title>
+    <link>/init/</link>
+    <description>Recent content in Initiatives on Psintica</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 28 Nov 2018 15:14:39 +1000</lastBuildDate><atom:link href="/init/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Astronomy Project Cohort 1</title>
+      <link>/init/astronomy-project-cohort-1/</link>
+      <pubDate>Wed, 28 Nov 2018 15:14:39 +1000</pubDate>
+      
+      <guid>/init/astronomy-project-cohort-1/</guid>
+      <description>This is the first batch of students doing the project on Astronomy, led by Aman Kumar(amanasci).
+The project goes through a variety of topics and tries to teach very fundamental tools and techniques one requires while getting involved in an astronomy project.
+Hopefully this will help them learn new things.
+Project : Classification of Galaxies List of students :
+Coming soon&amp;hellip;.</description>
+    </item>
+    
+    <item>
+      <title>Biology Project Group by Dr. Amit Khurana</title>
+      <link>/init/biology-project-group-by-dr.-amit-khurana/</link>
+      <pubDate>Wed, 28 Nov 2018 15:14:39 +1000</pubDate>
+      
+      <guid>/init/biology-project-group-by-dr.-amit-khurana/</guid>
+      <description>This is our second mentoring group, being led by Dr. Amit Khurana.
+More deatils coming soon.</description>
+    </item>
+    
+  </channel>
+</rss>
