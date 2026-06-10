@@ -1,6 +1,7 @@
 ---
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import 'katex/dist/katex.min.css';
 import '../styles/global.css';
 
 const { 
@@ -31,6 +32,7 @@ const {
     <!-- Preconnect Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
   </head>
   <body>
     <Navbar activePage={activePage} />
