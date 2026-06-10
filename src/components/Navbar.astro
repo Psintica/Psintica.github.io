@@ -1,0 +1,139 @@
+---
+const { activePage = "" } = Astro.props;
+
+const navItems = [
+  { name: "Home", path: "/" },
+  { name: "Initiatives", path: "/initiatives/" },
+  { name: "Publications", path: "/publications/" },
+  { name: "Team", path: "/team/" },
+  { name: "Undergrad Lab", path: "/join/" },
+  { name: "Contact", path: "/contact/" }
+];
+---
+
+<header class="header-nav">
+  <div class="container header-container">
+    <a href="/" class="logo-link">
+      <img src="/images/logo/logo.png" alt="Psintica Logo" />
+      <!-- <span>Psintica</span> -->
+    </a>
+
+    <nav>
+      <!-- Desktop Nav -->
+      <ul class="nav-links">
+        {navItems.map(item => {
+          const isActive = activePage === item.name || 
+                           (item.path !== "/" && Astro.url.pathname.startsWith(item.path)) ||
+                           (item.path === "/" && Astro.url.pathname === "/");
+          return (
+            <li>
+              <a href={item.path} class={`nav-link ${isActive ? 'active' : ''}`}>
+                {item.name}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+      
+      <!-- Mobile Nav Toggle -->
+      <button class="mobile-menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Mobile Nav Menu Panel -->
+  <div class="mobile-nav-panel" id="mobilePanel">
+    <div class="container">
+      <ul class="mobile-nav-links">
+        {navItems.map(item => {
+          const isActive = activePage === item.name || 
+                           (item.path !== "/" && Astro.url.pathname.startsWith(item.path)) ||
+                           (item.path === "/" && Astro.url.pathname === "/");
+          return (
+            <li>
+              <a href={item.path} class={`mobile-nav-link ${isActive ? 'active' : ''}`}>
+                {item.name}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </div>
+</header>
+
+<style>
+  .mobile-nav-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(13, 20, 38, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--color-border);
+    padding: 1.5rem 0;
+    z-index: 99;
+    box-shadow: var(--shadow-lg);
+    animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .mobile-nav-panel.open {
+    display: block;
+  }
+
+  .mobile-nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .mobile-nav-link {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    display: block;
+    padding: 0.5rem 0;
+  }
+
+  .mobile-nav-link.active, .mobile-nav-link:hover {
+    color: var(--color-primary);
+    padding-left: 0.5rem;
+  }
+</style>
+
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const mobilePanel = document.getElementById('mobilePanel');
+
+  if (menuToggle && mobilePanel) {
+    menuToggle.addEventListener('click', () => {
+      mobilePanel.classList.toggle('open');
+      
+      // Update hamburger icon to close icon
+      const isOpen = mobilePanel.classList.contains('open');
+      if (isOpen) {
+        menuToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line></svg>`;
+      } else {
+        menuToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>`;
+      }
+    });
+
+    // Close mobile panel on click outside or window resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768 && mobilePanel.classList.contains('open')) {
+        mobilePanel.classList.remove('open');
+        menuToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>`;
+      }
+    });
+  }
+</script>

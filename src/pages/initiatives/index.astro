@@ -1,0 +1,164 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const initiatives = await getCollection('initiatives');
+const sortedInitiatives = initiatives.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
+
+const activeProjects = sortedInitiatives.filter(p => p.data.status === 'active');
+const completedProjects = sortedInitiatives.filter(p => p.data.status === 'completed');
+---
+
+<BaseLayout title="Initiatives | Psintica Research Lab" activePage="Initiatives">
+  <!-- Page Header -->
+  <section class="section-padding animate-fade-in" style="padding-bottom: 2rem;">
+    <div class="container">
+      <div class="badge" style="margin-bottom: 1rem;">Research Lab</div>
+      <h1>Our Initiatives & Cohorts</h1>
+      <p style="color: var(--color-text-secondary); font-size: 1.15rem; margin-top: 1rem; max-width: 700px;">
+        Explore the research projects, cohorts, and open-science mentoring tracks hosted by Psintica. We actively train undergraduates through hands-on project collaboration.
+      </p>
+    </div>
+  </section>
+
+  <!-- Active Initiatives -->
+  {activeProjects.length > 0 && (
+    <section class="section-padding" style="padding-top: 2rem; padding-bottom: 3rem;">
+      <div class="container">
+        <h2 style="font-size: 1.8rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem;">
+          <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: var(--color-primary); box-shadow: var(--glow-primary);"></span>
+          Active Tracks
+        </h2>
+        <div class="initiatives-grid">
+          {activeProjects.map(project => (
+            <div class="glass-card project-card">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                <span class="badge">Active</span>
+                <div class="project-tags">
+                  {project.data.tags.map(tag => (
+                    <span class="tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
+              <h3>{project.data.title}</h3>
+              <p style="color: var(--color-text-secondary); margin: 1rem 0 2rem; font-size: 0.95rem; line-height: 1.5;">
+                {project.data.description}
+              </p>
+              <div class="card-footer">
+                <span class="leader-info">
+                  Lead: <strong>{project.data.leader}</strong>
+                </span>
+                <a href={`/initiatives/${project.id}/`} class="btn-link">
+                  View Track 
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" x2="19" y1="12" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Completed/Archived Initiatives -->
+  {completedProjects.length > 0 && (
+    <section class="section-padding" style="padding-top: 2rem; padding-bottom: 6rem;">
+      <div class="container">
+        <h2 style="font-size: 1.8rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem;">
+          <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: var(--color-text-muted);"></span>
+          Completed Cohorts
+        </h2>
+        <div class="initiatives-grid">
+          {completedProjects.map(project => (
+            <div class="glass-card project-card">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                <span class="badge badge-secondary">Completed</span>
+                <div class="project-tags">
+                  {project.data.tags.map(tag => (
+                    <span class="tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
+              <h3>{project.data.title}</h3>
+              <p style="color: var(--color-text-secondary); margin: 1rem 0 2rem; font-size: 0.95rem; line-height: 1.5;">
+                {project.data.description}
+              </p>
+              <div class="card-footer">
+                <span class="leader-info">
+                  Lead: <strong>{project.data.leader}</strong>
+                </span>
+                <a href={`/initiatives/${project.id}/`} class="btn-link">
+                  View History
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" x2="19" y1="12" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .initiatives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    .initiatives-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .project-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.25rem;
+    margin-top: auto;
+  }
+
+  .leader-info {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .btn-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: var(--transition-snappy);
+  }
+
+  .project-card:hover .btn-link {
+    color: var(--color-text-primary);
+    transform: translateX(4px);
+  }
+</style>

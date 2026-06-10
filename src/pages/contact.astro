@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Contact | Psintica Research Lab" activePage="Contact">
+  <!-- Page Header -->
+  <section class="section-padding animate-fade-in" style="padding-bottom: 2rem;">
+    <div class="container" style="text-align: center; max-width: 800px;">
+      <div class="badge" style="margin-bottom: 1rem;">Get in Touch</div>
+      <h1>Contact Psintica</h1>
+      <p style="color: var(--color-text-secondary); font-size: 1.15rem; margin-top: 1rem; line-height: 1.6;">
+        Have questions about our research, cohorts, or want to collaborate? Reach out to us through the channels below.
+      </p>
+    </div>
+  </section>
+
+  <!-- Contact Cards Grid -->
+  <section class="section-padding" style="padding-top: 2rem; padding-bottom: 7rem;">
+    <div class="container" style="max-width: 900px;">
+      <div class="contact-grid">
+        <!-- Email Card -->
+        <div class="glass-card contact-card">
+          <div class="contact-icon" style="color: var(--color-primary); background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.15);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+          <h3>Email Us</h3>
+          <p style="color: var(--color-text-muted); margin: 0.5rem 0 1.5rem; font-size: 0.95rem;">For general inquiries, collaborations, and research proposals.</p>
+          <a href="mailto:psintica@gmail.com" class="btn btn-secondary" style="font-size: 0.95rem; width: 100%;">
+            psintica@gmail.com
+          </a>
+        </div>
+
+        <!-- Discord Card -->
+        <div class="glass-card contact-card">
+          <div class="contact-icon" style="color: var(--color-secondary); background: rgba(157, 78, 221, 0.05); border: 1px solid rgba(157, 78, 221, 0.15);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-3.5.75.187 1.5 1 2 2.5 1.072 3.214-1.224 4.054 1 3.5.5-.125 1.5-1 1-2.5-.357-1.071-1-1.5-1.5-2"></path></svg>
+          </div>
+          <h3>Discord Server</h3>
+          <p style="color: var(--color-text-muted); margin: 0.5rem 0 1.5rem; font-size: 0.95rem;">Join our community channels, talk to leads, and ask questions.</p>
+          <a href="https://discord.com/invite/Kjg3QYPTHj/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.95rem; width: 100%;">
+            Join Discord Server
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .contact-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 2rem;
+  }
+
+  .contact-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  @media (max-width: 640px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

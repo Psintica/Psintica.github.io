@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const initiatives = await getCollection('initiatives');
+  return initiatives.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={`${entry.data.title} | Psintica`} activePage="Initiatives">
+  <!-- Back Button & Header -->
+  <section class="section-padding" style="padding-bottom: 2rem;">
+    <div class="container" style="max-width: 800px;">
+      <a href="/initiatives/" class="back-link" style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; margin-bottom: 2rem; color: var(--color-text-muted);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Back to Initiatives
+      </a>
+      
+      <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1.5rem;">
+        <span class={`badge ${entry.data.status === 'active' ? '' : 'badge-secondary'}`}>
+          {entry.data.status}
+        </span>
+        <span style="font-size: 0.9rem; color: var(--color-text-muted);">
+          Lead: <strong>{entry.data.leader}</strong>
+        </span>
+      </div>
+
+      <h1 style="font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.5rem;">{entry.data.title}</h1>
+      
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; border-bottom: 1px solid var(--color-border); padding-bottom: 2rem;">
+        {entry.data.tags.map(tag => (
+          <span style="font-size: 0.8rem; color: var(--color-primary); background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.1); padding: 0.25rem 0.75rem; border-radius: 50px;">
+            {tag}
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Markdown Content -->
+  <section style="padding-bottom: 6rem;">
+    <div class="container" style="max-width: 800px;">
+      <article class="prose">
+        <Content />
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .back-link:hover {
+    color: var(--color-primary) !important;
+  }
+</style>

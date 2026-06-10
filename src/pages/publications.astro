@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const publications = await getCollection('publications');
+const sortedPublications = publications.sort((a, b) => {
+  if (b.data.year !== a.data.year) {
+    return b.data.year - a.data.year;
+  }
+  return (a.data.order || 99) - (b.data.order || 99);
+});
+---
+
+<BaseLayout title="Publications | Psintica Research Lab" activePage="Publications">
+  <!-- Page Header -->
+  <section class="section-padding animate-fade-in" style="padding-bottom: 2rem;">
+    <div class="container">
+      <div class="badge" style="margin-bottom: 1rem;">Research Reports</div>
+      <h1>Publications & Preprints</h1>
+      <p style="color: var(--color-text-secondary); font-size: 1.15rem; margin-top: 1rem; max-width: 700px;">
+        A comprehensive record of scientific publications, technical reports, and preprints authored by Psintica research groups and cohorts.
+      </p>
+    </div>
+  </section>
+
+  <!-- Publications List -->
+  <section class="section-padding" style="padding-top: 2rem; padding-bottom: 6rem;">
+    <div class="container" style="max-width: 900px;">
+      {sortedPublications.length === 0 ? (
+        <div class="glass-card" style="text-align: center; padding: 4rem 2rem;">
+          <p style="color: var(--color-text-muted); font-size: 1.1rem;">No publications listed yet. Check back soon!</p>
+        </div>
+      ) : (
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+          {sortedPublications.map(pub => (
+            <div class="glass-card pub-card">
+              <!-- Meta Row -->
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+                <span class="pub-year">{pub.data.year}</span>
+                <div style="display: flex; gap: 0.5rem;">
+                  <span class={`badge ${pub.data.status === 'published' ? '' : pub.data.status === 'preprint' ? 'badge-secondary' : 'badge-under-review'}`}>
+                    {pub.data.status}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Title & Authors -->
+              <h3 style="font-size: 1.35rem; line-height: 1.3; margin-bottom: 0.75rem;">
+                {pub.data.url ? (
+                  <a href={pub.data.url} target="_blank" rel="noopener noreferrer" class="pub-title-link">
+                    {pub.data.title}
+                  </a>
+                ) : (
+                  pub.data.title
+                )}
+              </h3>
+              
+              <p class="pub-authors" style="font-size: 0.95rem; color: var(--color-text-secondary); margin-bottom: 0.5rem; font-weight: 500;">
+                {pub.data.authors.join(', ')}
+              </p>
+              
+              <p class="pub-journal" style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 1.5rem; font-style: italic;">
+                {pub.data.journal} {pub.data.doi && `• DOI: ${pub.data.doi}`}
+              </p>
+
+              <!-- Tags -->
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                {pub.data.tags.map(tag => (
+                  <span style="font-size: 0.75rem; color: var(--color-text-muted); border: 1px solid var(--color-border); padding: 0.15rem 0.5rem; border-radius: 4px; background: rgba(255, 255, 255, 0.01);">{tag}</span>
+                ))}
+              </div>
+
+              <!-- Abstract Toggle (Using HTML5 Details element for premium clean look) -->
+              <details class="pub-abstract-details">
+                <summary class="pub-abstract-summary">
+                  <span>Abstract</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </summary>
+                <div class="pub-abstract-content" style="padding-top: 1rem; color: var(--color-text-secondary); font-size: 0.95rem; line-height: 1.6; border-top: 1px solid var(--color-border); margin-top: 1rem;">
+                  <div class="prose">
+                    {pub.body ? (
+                      /* We render standard paragraphs from body. Since body is markdown, a simple split and map makes it readable here */
+                      pub.body.split('\n\n').map(p => {
+                        if (p.trim().startsWith('#') || p.trim().startsWith('##')) return null;
+                        return <p>{p}</p>;
+                      })
+                    ) : (
+                      "No abstract available."
+                    )}
+                  </div>
+                  {pub.data.url && (
+                    <div style="margin-top: 1.5rem;">
+                      <a href={pub.data.url} target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+                        View Pre-print / Paper
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.25rem;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </details>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .pub-card {
+    transition: var(--transition-smooth);
+    border-left: 3px solid var(--color-border);
+  }
+
+  .pub-card:hover {
+    border-left-color: var(--color-primary);
+  }
+
+  .pub-year {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .badge-under-review {
+    background: rgba(251, 191, 36, 0.08);
+    color: rgb(251, 191, 36);
+    border: 1px solid rgba(251, 191, 36, 0.15);
+  }
+
+  .pub-title-link {
+    color: var(--color-text-primary);
+  }
+
+  .pub-title-link:hover {
+    color: var(--color-primary);
+    text-shadow: none;
+  }
+
+  .pub-abstract-details {
+    margin-top: 1rem;
+  }
+
+  .pub-abstract-summary {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    user-select: none;
+  }
+
+  .pub-abstract-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .pub-abstract-summary .chevron {
+    transition: var(--transition-smooth);
+  }
+
+  .pub-abstract-details[open] .pub-abstract-summary .chevron {
+    transform: rotate(180deg);
+  }
+</style>

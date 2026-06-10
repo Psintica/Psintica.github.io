@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const team = await getCollection('team');
+  return team.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+// Generate initials for avatar fallback
+function getInitials(name) {
+  return name
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+}
+const hasAvatar = entry.data.avatar && entry.data.avatar !== 'default';
+---
+
+<BaseLayout title={`${entry.data.name} | Psintica`} activePage="Team">
+  <section class="section-padding" style="padding-bottom: 6rem;">
+    <div class="container" style="max-width: 800px;">
+      <!-- Back Link -->
+      <a href="/team/" class="back-link" style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; margin-bottom: 3rem; color: var(--color-text-muted);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Back to Team
+      </a>
+
+      <!-- Profile Header Card -->
+      <div class="profile-header glass-card" style="margin-bottom: 3rem; display: flex; gap: 2.5rem; align-items: center; flex-wrap: wrap;">
+        <div class="avatar-large">
+          {hasAvatar ? (
+            <img src={entry.data.avatar} alt={`Photo of ${entry.data.name}`} class="avatar-img" />
+          ) : (
+            <div class="avatar-fallback">
+              {getInitials(entry.data.name)}
+            </div>
+          )}
+        </div>
+
+        <div class="profile-title-area">
+          <h1 style="font-size: clamp(2rem, 4vw, 2.5rem); margin-bottom: 0.5rem;">{entry.data.name}</h1>
+          <p class="role" style="font-size: 1.05rem; color: var(--color-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">{entry.data.role}</p>
+          
+          <!-- Social Icons in profile -->
+          <div class="social-links" style="display: flex; gap: 1.25rem; margin-top: 1.5rem;">
+            {entry.data.social?.linkedin && (
+              <a href={entry.data.social.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style="color: var(--color-text-secondary);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+              </a>
+            )}
+            {entry.data.social?.github && (
+              <a href={entry.data.social.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" style="color: var(--color-text-secondary);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+              </a>
+            )}
+            {entry.data.social?.scholar && (
+              <a href={entry.data.social.scholar} target="_blank" rel="noopener noreferrer" aria-label="Google Scholar" style="color: var(--color-text-secondary);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>
+              </a>
+            )}
+            {entry.data.social?.email && (
+              <a href={`mailto:${entry.data.social.email}`} aria-label="Email" style="color: var(--color-text-secondary);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <!-- Bio / Content -->
+      <article class="prose">
+        <Content />
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .back-link:hover {
+    color: var(--color-primary) !important;
+  }
+
+  .avatar-large {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(13, 20, 38, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .avatar-fallback {
+    font-family: var(--font-heading);
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(157, 78, 221, 0.08) 100%);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .social-links a:hover {
+    color: var(--color-primary) !important;
+  }
+
+  @media (max-width: 580px) {
+    .profile-header {
+      flex-direction: column;
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+    }
+    .social-links {
+      justify-content: center;
+    }
+  }
+</style>

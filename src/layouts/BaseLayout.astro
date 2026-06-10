@@ -1,0 +1,44 @@
+---
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+const { 
+  title = "Psintica | AIxScience Research Lab", 
+  description = "Psintica is a neo-research lab solving the problem of scientific discovery at the intersection of AI and Science, and mentoring undergrads into research.",
+  activePage = ""
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/images/logo/logo.png" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO Optimization -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:image" content="/images/logo/logo.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    
+    <!-- Preconnect Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body>
+    <Navbar activePage={activePage} />
+    
+    <main style="flex: 1; display: flex; flex-direction: column;">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

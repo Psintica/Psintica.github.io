@@ -1,0 +1,185 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const team = await getCollection('team');
+const sortedTeam = team.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
+
+// Function to generate initials
+function getInitials(name) {
+  return name
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+}
+---
+
+<BaseLayout title="Team | Psintica Research Lab" activePage="Team">
+  <!-- Page Header -->
+  <section class="section-padding animate-fade-in" style="padding-bottom: 2rem;">
+    <div class="container">
+      <div class="badge" style="margin-bottom: 1rem;">People</div>
+      <h1>Meet Our Researchers & Mentors</h1>
+      <p style="color: var(--color-text-secondary); font-size: 1.15rem; margin-top: 1rem; max-width: 700px;">
+        Psintica is powered by researchers, industry mentors, and passionate student builders working together to accelerate scientific frontiers.
+      </p>
+    </div>
+  </section>
+
+  <!-- Team Grid -->
+  <section class="section-padding" style="padding-top: 2rem; padding-bottom: 6rem;">
+    <div class="container">
+      <div class="team-grid">
+        {sortedTeam.map(member => {
+          const hasAvatar = member.data.avatar && member.data.avatar !== 'default';
+          return (
+            <div class="glass-card team-card">
+              <div class="avatar-container">
+                {hasAvatar ? (
+                  <img src={member.data.avatar} alt={`Photo of ${member.data.name}`} class="avatar-img" />
+                ) : (
+                  <div class="avatar-fallback">
+                    {getInitials(member.data.name)}
+                  </div>
+                )}
+              </div>
+              
+              <div class="team-meta">
+                <h3>{member.data.name}</h3>
+                <p class="role">{member.data.role}</p>
+                <p style="font-size: 0.95rem; color: var(--color-text-secondary); margin: 1.25rem 0; line-height: 1.5; min-height: 4.5rem;">
+                  {member.body ? member.body.split('\n')[0] : 'Research Lab Member.'}
+                </p>
+              </div>
+
+              <!-- Social Links and Bio Button -->
+              <div class="member-footer">
+                <div class="social-links">
+                  {member.data.social?.linkedin && (
+                    <a href={member.data.social.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    </a>
+                  )}
+                  {member.data.social?.github && (
+                    <a href={member.data.social.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+                    </a>
+                  )}
+                  {member.data.social?.email && (
+                    <a href={`mailto:${member.data.social.email}`} aria-label="Email">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    </a>
+                  )}
+                </div>
+                
+                <a href={`/team/${member.id}/`} class="profile-link">
+                  Profile &rarr;
+                </a>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .team-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2.5rem 1.5rem 1.75rem;
+  }
+
+  .avatar-container {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    border: 2px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(13, 20, 38, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: var(--transition-smooth);
+  }
+
+  .team-card:hover .avatar-container {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.25);
+    transform: scale(1.05);
+  }
+
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .avatar-fallback {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(157, 78, 221, 0.08) 100%);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .role {
+    font-size: 0.9rem;
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-top: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .member-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.25rem;
+    margin-top: auto;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .social-links a {
+    color: var(--color-text-muted);
+  }
+
+  .social-links a:hover {
+    color: var(--color-primary);
+  }
+
+  .profile-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+  }
+
+  .profile-link:hover {
+    color: var(--color-primary);
+  }
+</style>
